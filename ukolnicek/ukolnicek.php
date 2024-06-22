@@ -30,14 +30,17 @@ if (array_key_exists("uprava", $_GET)) {
     $prikaz = $instanceDB->prepare("SELECT * FROM poznamky WHERE id=?");
     $prikaz->execute(array($idPoznamky));
     $polePoznamky = $prikaz->fetch(PDO::FETCH_ASSOC);
-    var_dump($polePoznamky);
     $nazevPoznamky = $polePoznamky["nazev"];
     $textPoznamky = $polePoznamky["poznamka"];
-    echo $nazevPoznamky;
-    echo $textPoznamky;
 }
 
+if (array_key_exists("uprava-submit", $_GET)) {
 
+}
+
+if (array_key_exists("zrusit-upravu-submit", $_GET)) {
+    header("Location: ?");
+}
 
 
 ?>
@@ -74,6 +77,13 @@ if (array_key_exists("uprava", $_GET)) {
             <td><a href='?uprava={$klic['id']}'>Úprava</a></td>
             </tr>";
         };
+        if (array_key_exists("uprava", $_GET)) {
+            echo "<tr>
+            <td> $nazevPoznamky </td>
+            <td> $textPoznamky </td>
+            <td> <button type='submit' name='uprava-submit'>Upravit</button>
+            <td> <button type='submit' name='zrusit-upravu-submit'>Zrušit</button>";
+        }
         ?>
     </table>
     <!-- Slavnostně přísahám, že k vytvoření Úkolníčku nebyla použita umělá inteligence -->
