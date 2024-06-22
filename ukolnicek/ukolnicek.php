@@ -27,10 +27,14 @@ if (array_key_exists("smazat", $_GET)) {
 
 if (array_key_exists("uprava", $_GET)) {
     $idPoznamky = $_GET["uprava"];
-    $prikaz = $instanceDB->prepare("SELECT FROM poznamky WHERE id=?");
+    $prikaz = $instanceDB->prepare("SELECT * FROM poznamky WHERE id=?");
     $prikaz->execute(array($idPoznamky));
     $polePoznamky = $prikaz->fetch(PDO::FETCH_ASSOC);
     var_dump($polePoznamky);
+    $nazevPoznamky = $polePoznamky["nazev"];
+    $textPoznamky = $polePoznamky["poznamka"];
+    echo $nazevPoznamky;
+    echo $textPoznamky;
 }
 
 
@@ -51,8 +55,8 @@ if (array_key_exists("uprava", $_GET)) {
 
     <form action="" method="post">
         <label for="xy">Název</label>
-        <input type="text" name="nazev-poznamky" id="xy" value="x">
-        <textarea name="text-poznamky" id="">y</textarea>
+        <input type="text" name="nazev-poznamky" id="xy">
+        <textarea name="text-poznamky" id=""></textarea>
         <button type="submit" name="vytvoreni-submit">Vytvořit</button>
     </form>
     <table border="1px">
