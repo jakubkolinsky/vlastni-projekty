@@ -34,11 +34,15 @@ if (array_key_exists("uprava", $_GET)) {
     $textPoznamky = $polePoznamky["poznamka"];
 }
 
-if (array_key_exists("uprava-submit", $_GET)) {
-
+if (array_key_exists("uprava-submit", $_POST)) {
+    $nazev = trim($_POST["uprava-nazev"]);
+    $text = trim($_POST["uprava-text"]);
+    $prikaz = $instanceDB->prepare("UPDATE poznamky SET nazev=?, poznamka=?");
+    $prikaz->execute(array($nazev, $text));
+    header("Location: ?");
 }
 
-if (array_key_exists("zrusit-upravu-submit", $_GET)) {
+if (array_key_exists("zrusit-upravu-submit", $_POST)) {
     header("Location: ?");
 }
 
@@ -68,8 +72,15 @@ if (array_key_exists("zrusit-upravu-submit", $_GET)) {
         <th>Smazání</th>
         <th>Úprava</th>
         <?php
-
+if (array_key_exists("uprava", $_GET)) {
+            echo "<tr> <form method='post'>
+            <td> <input type='text' name='uprava-nazev' id='xy' value='$nazevPoznamky'> </td>
+            <td> <textarea name='uprava-text' id=>$textPoznamky</textarea></td>
+            <td> <button type='submit' name='uprava-submit'>Upravit</button></td>
+            <td> <button type='submit' name='zrusit-upravu-submit'>Zrušit</button></td></form>";
+        };
         foreach ($polePoznamek as $klic) {
+
             echo "<tr>
             <td> $klic[nazev]</td>
             <td> $klic[poznamka]</td>
@@ -77,13 +88,7 @@ if (array_key_exists("zrusit-upravu-submit", $_GET)) {
             <td><a href='?uprava={$klic['id']}'>Úprava</a></td>
             </tr>";
         };
-        if (array_key_exists("uprava", $_GET)) {
-            echo "<tr>
-            <td> $nazevPoznamky </td>
-            <td> $textPoznamky </td>
-            <td> <button type='submit' name='uprava-submit'>Upravit</button>
-            <td> <button type='submit' name='zrusit-upravu-submit'>Zrušit</button>";
-        }
+        
         ?>
     </table>
     <!-- Slavnostně přísahám, že k vytvoření Úkolníčku nebyla použita umělá inteligence -->
